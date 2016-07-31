@@ -12,7 +12,7 @@
 				<a href="/"><img src="images/logo.png" alt="logo"></a>
 			</div>
 			<div class="logo p-0 m-t-20 m-b-15 col-lg-6">
-				<a target="_blank" href="" class="pull-right">
+				<a target="_blank" href="api/login" class="pull-right">
 					<img src="images/logo2.png" alt="logo">
 				</a>
 			</div>
@@ -32,7 +32,7 @@
 <div class="footer">
 	<div class="container">
 		<div class="col-lg-12">
-			<a target="_blank" href="http://www.stiftung-spi.de" class="pull-right m-l-15">
+			<a target="_blank" href="" class="pull-right m-l-15">
 				<img src="images/logo3.png" alt="logo">
 			</a>
 		</div>

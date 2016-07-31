@@ -1,12 +1,5 @@
 <?php
 
-define ( 'PA', 'p' );
-define ( 'TA', 't' );
-define ( 'ADMIN', 'a' );
-define ( 'SCHOOL', 's' );
-define ( 'DISTRICT', 'd' );
-define ( 'SENAT', 'g' );
-
 class Auth {
   public $token = '';
   public $user = array();
@@ -23,7 +16,7 @@ class Auth {
           ->createCommand()
           ->select('usr.*, IFNULL(`utr`.`can_view`, 0) can_view, IFNULL(`utr`.`can_edit`, 0) can_edit')
           ->from('spi_user usr')
-          ->leftJoin('spi_user_type_right utr', 'utr.type_id=usr.type_id AND utr.page_id = (SELECT id FROM spi_page WHERE page_code = :code)', array(':' => safe($_GET, 'model')))
+          ->leftJoin('spi_user_type_right utr', 'utr.type_id=usr.type_id AND utr.page_id = (SELECT id FROM spi_page WHERE page_view = :code)', array(':code' => safe($_GET, 'model')))
           ->where('usr.auth_token=:token', array(':token' =>$token ))
           ->queryRow();
       }
@@ -77,14 +70,14 @@ class Auth {
         $rights = array();
         $session_rights = array();
         $rows = Yii::app()->db->createCommand()
-          ->select('pag.page_code, utr.can_show, utr.can_view, utr.can_edit')
+          ->select('pag.page_view, utr.can_show, utr.can_view, utr.can_edit')
           ->from('spi_page pag')
           ->leftJoin('spi_user_type_right utr', 'utr.page_id = pag.id')
           ->where('utr.type_id=:type_id', array(':type_id'=>$this->user['type_id']))
           ->queryAll();
         foreach($rows as $row) {
-          $rights[$row['page_code']] = array('show' => (int)$row['can_show'], 'view' => (int)$row['can_view'], 'edit' => (int)$row['can_edit']);
-          $session_rights[$row['page_code']] = array('show' => (int)$row['can_show'], 'view' => (int)$row['can_view'], 'edit' => (int)$row['can_edit']);
+          $rights[$row['page_view']] = array('show' => (int)$row['can_show'], 'view' => (int)$row['can_view'], 'edit' => (int)$row['can_edit']);
+          $session_rights[$row['page_view']] = array('show' => (int)$row['can_show'], 'view' => (int)$row['can_view'], 'edit' => (int)$row['can_edit']);
         }
         
         $res = array( 'result'      => true

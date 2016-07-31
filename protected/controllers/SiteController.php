@@ -26,13 +26,13 @@ class SiteController extends Controller
   public function get_pages(){
 
     $rows = Yii::app()->db->createCommand()
-          ->select('pag.layout, pag.is_without_login')
+          ->select('pag.page_view, pag.is_without_login')
           ->from('spi_page pag')
           ->queryAll();
     
     $pages = array();
     foreach($rows as $row){
-      $pages[$row['layout']] = array('layout'            => $row['layout']
+      $pages[$row['page_view']] = array('page_view'            => $row['page_view']
                                       , 'is_without_login'  => $row['is_without_login']
                                       );
     };
@@ -45,7 +45,7 @@ class SiteController extends Controller
 		$pageInfo = safe($pages,$page);
     session_start();
     
-		if(safe($pageInfo,'layout')) {
+		if(safe($pageInfo,'page_view')) {
 //      $this->layout = $pageInfo['layout'];
       $this->layout = 'main';
       if($pageInfo['is_without_login']){
@@ -54,12 +54,12 @@ class SiteController extends Controller
         if($_SESSION['rights'][$page] && $_SESSION['rights'][$page]['show']){  
           $this->render(safe($pageInfo,'render',$page));
         } else {
-          $this->redirect('/login');
+          $this->redirect('/');
         }
       }
 			
 		} else {
-//      $this->redirect('/');
+        $this->redirect('/');
     }
 
   }

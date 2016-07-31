@@ -5,9 +5,6 @@ define ( 'ACTION_UPDATE', 2 );
 define ( 'ACTION_INSERT', 3 );
 define ( 'ACTION_DELETE', 4 );
 
-
-define ( 'USER_TYPES', 'a,t,s,d' );
-
 class BaseModel extends CFormModel {
   public $table = '';
   public $id = false;
@@ -15,7 +12,6 @@ class BaseModel extends CFormModel {
   public $localDate = array ();
   public $method = false;
   public $isFilter = false;
-  public $isFinance = false;
 
   public $filePath = '';
   public $uploadPath = '';
