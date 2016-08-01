@@ -10,7 +10,7 @@ $this->breadcrumbs = array('Contact');
 					<div class="container center-block">
 						<div class="panel panel-default">
 							<div class="panel-heading clearfix">
-								<h1 class="panel-title col-lg-6">Kontakt</h1>
+								<h1 class="panel-title col-lg-6">Contact</h1>
 							</div>
 							<div class="panel-body contact-block">
 								<div class="row">
@@ -18,16 +18,16 @@ $this->breadcrumbs = array('Contact');
 										<ul class="list-unstyled">
 											<li class="address">
 												<address>
-													<strong>Тестовое задание</strong>
-													<span><strong>Статистические данные посещения сайта</strong></span>
-													<span>Часть 1</span>
-													<span>Харьков</span>
+													<strong>Point1</strong>
+													<span><strong>Description</strong></span>
+													<span>Part 1</span>
+													<span>Kharkov</span>
 												</address>
 											</li>
 											<li class="contact-phone">
 												<dl class="dl-horizontal">
 													<dt>Phone:</dt>
-													<dd> +3 (067) 579-11-65 </dd>
+													<dd> +3 (067) 333-33-33 </dd>
 												</dl>
 											</li>
 											<li class="contact-email">

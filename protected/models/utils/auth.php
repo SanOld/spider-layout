@@ -14,7 +14,7 @@ class Auth {
       } else {
         $this->user = Yii::app()->db
           ->createCommand()
-          ->select('usr.*, IFNULL(`utr`.`can_view`, 0) can_view, IFNULL(`utr`.`can_edit`, 0) can_edit')
+          ->select('usr.*, IFNULL(`utr`.`can_show`, 0) can_show,IFNULL(`utr`.`can_view`, 0) can_view, IFNULL(`utr`.`can_edit`, 0) can_edit')
           ->from('spi_user usr')
           ->leftJoin('spi_user_type_right utr', 'utr.type_id=usr.type_id AND utr.page_id = (SELECT id FROM spi_page WHERE page_view = :code)', array(':code' => safe($_GET, 'model')))
           ->where('usr.auth_token=:token', array(':token' =>$token ))
@@ -34,7 +34,7 @@ class Auth {
         $password = $get['password'];
       }
 
-      $select = 'usr.id, usr.type_id, usr.login,  usr.sex,  usr.first_name, usr.last_name, usr.email, usr.phone, usr.auth_token, usr.auth_token_created_at, ust.name type_name';
+      $select = 'usr.id, usr.type_id, usr.login,  usr.gender,  usr.first_name, usr.last_name, usr.email, usr.phone, usr.auth_token, usr.auth_token_created_at, ust.name type_name';
       $this->user = Yii::app()->db->createCommand()
                  ->select($select)
                  ->from('spi_user usr')

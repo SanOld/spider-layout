@@ -4,10 +4,10 @@ $this->pageTitle = 'Statistcs | ' . Yii::app()->name;
 $this->breadcrumbs = array('Statistcs');
 
 ?>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/visit.js"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin_dashboard.js"></script>
 
 			<!-- Page Content Start -->
-<div ng-controller="VisitController" class="wraper container-fluid" ng-cloak>
+<div ng-controller="AdminDashboardController" class="wraper container-fluid" ng-cloak>
 	<div class="row">
 		<div class="container center-block edit-user doc-template">
 			<div spi-hint-main header="_hint.header.title" text="_hint.header.text"></div>

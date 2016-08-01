@@ -39,7 +39,7 @@ INSERT INTO `spi_hint` (`id`, `page_id`, `position_id`, `title`, `description`) 
 -- Дамп структуры для таблица test.spi_page
 CREATE TABLE IF NOT EXISTS `spi_page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `layout` varchar(45) NOT NULL,
+  `page_view` varchar(45) NOT NULL,
   `name` varchar(255) NOT NULL,
   `is_without_login` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
@@ -47,10 +47,17 @@ CREATE TABLE IF NOT EXISTS `spi_page` (
 
 -- Дамп данных таблицы test.spi_page: ~3 rows (приблизительно)
 /*!40000 ALTER TABLE `spi_page` DISABLE KEYS */;
-INSERT INTO `spi_page` (`id`, `layout`, `name`, `is_without_login`) VALUES
-	(1, 'user', 'Users', 1),
-	(2, 'user_type', 'User Roles', 1),
-	(3, 'dashboard', 'dashboard', 1);
+INSERT INTO `spi_page` (`page_view`, `name`, `is_without_login`) VALUES
+	('user', 'Users', 1),
+	('user_type', 'User Roles', 1),
+  ('resttest', 'Rest Test', 0),
+  ('error404', 'Error 404', 1),
+	('dashboard', 'dashboard', 1),
+  ('login', 'Login', 1),
+  ('contact', 'Contact', 1),
+  ('about', 'About us', 1),
+  ('admmin_dashboard', 'Admin Dashboard', 0);
+
 /*!40000 ALTER TABLE `spi_page` ENABLE KEYS */;
 
 
@@ -93,8 +100,7 @@ CREATE TABLE IF NOT EXISTS `spi_user` (
   `relation_id` int(11) DEFAULT NULL,
   `login` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
-  `is_finansist` tinyint(1) NOT NULL DEFAULT '0',
-  `sex` tinyint(1) NOT NULL,
+  `gender` tinyint(1) NOT NULL,
   `title` varchar(45) DEFAULT NULL,
   `function` varchar(45) DEFAULT NULL,
   `first_name` varchar(45) NOT NULL,
@@ -112,8 +118,8 @@ CREATE TABLE IF NOT EXISTS `spi_user` (
 
 -- Дамп данных таблицы test.spi_user: ~1 rows (приблизительно)
 /*!40000 ALTER TABLE `spi_user` DISABLE KEYS */;
-INSERT INTO `spi_user` (`id`, `type`, `type_id`, `relation_id`, `login`, `password`, `is_finansist`, `sex`, `title`, `function`, `first_name`, `last_name`, `email`, `phone`, `is_active`, `auth_token`, `auth_token_created_at`, `recovery_token`) VALUES
-	(1, 'a', 1, NULL, 'test', '098f6bcd4621d373cade4e832627b4f6', 1, 1, 'Nice titile', NULL, 'Mister', 'Test', 'test@ma.rt', '1234567890', 1, 'bae4d11fce0e71521dcc74f802f11a2c', '2016-02-17 07:51:51', '427e6bd7ac6b908a27ca18f5a0400344');
+INSERT INTO `spi_user` (`id`, `type`, `type_id`, `relation_id`, `login`, `password`, `gender`, `title`, `function`, `first_name`, `last_name`, `email`, `phone`, `is_active`, `auth_token`, `auth_token_created_at`, `recovery_token`) VALUES
+	(1, 'a', 1, NULL, 'test', '098f6bcd4621d373cade4e832627b4f6', 1, 'Nice titile', NULL, 'Mister', 'Test', 'test@ma.rt', '1234567890', 1, 'bae4d11fce0e71521dcc74f802f11a2c', '2016-02-17 07:51:51', '427e6bd7ac6b908a27ca18f5a0400344');
 /*!40000 ALTER TABLE `spi_user` ENABLE KEYS */;
 
 
@@ -130,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `spi_user_type` (
 /*!40000 ALTER TABLE `spi_user_type` DISABLE KEYS */;
 INSERT INTO `spi_user_type` (`id`, `type`, `name`, `default`) VALUES
 	(1, 'a', 'Admin', 1),
-	(2, 'a', 'PA', 1),
+	(2, 'g', 'Guest', 1),
 	(3, 't', 'TA', 1),
 	(4, 's', 'School', 1),
 	(5, 'd', 'District', 1),
@@ -143,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `spi_user_type_right` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type_id` int(11) NOT NULL,
   `page_id` int(11) NOT NULL,
+  `can_show` tinyint(1) NOT NULL DEFAULT '0',
   `can_view` tinyint(1) NOT NULL DEFAULT '0',
   `can_edit` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -154,17 +161,31 @@ CREATE TABLE IF NOT EXISTS `spi_user_type_right` (
 
 -- Дамп данных таблицы test.spi_user_type_right: ~10 rows (приблизительно)
 /*!40000 ALTER TABLE `spi_user_type_right` DISABLE KEYS */;
-INSERT INTO `spi_user_type_right` (`id`, `type_id`, `page_id`, `can_view`, `can_edit`) VALUES
-	(1, 1, 1, 1, 1),
-	(2, 1, 2, 1, 1),
-	(3, 2, 1, 1, 0),
-	(4, 2, 2, 1, 0),
-	(5, 3, 1, 1, 0),
-	(6, 3, 2, 1, 0),
-	(7, 4, 1, 1, 0),
-	(8, 4, 2, 0, 0),
-	(9, 5, 1, 1, 0),
-	(10, 1, 3, 1, 1);
+SELECT @user_page_id:=id FROM `spi_page` WHERE `page_view`= 'user';
+SELECT @user_type_page_id:=id FROM `spi_page` WHERE `page_view`= 'user_type';
+SELECT @dashboard_page_id:=id FROM `spi_page` WHERE `page_view`= 'dashboard';
+SELECT @login_page_id:=id FROM `spi_page` WHERE `page_view`= 'login';
+
+SELECT @resttest_page_id:=id FROM `spi_page` WHERE `page_view`= 'resttest';
+SELECT @error_page_id:=id FROM `spi_page` WHERE `page_view`= 'error404';
+SELECT @admin_dashboard_page_id:=id FROM `spi_page` WHERE `page_view`= 'admin_dashboard';
+
+INSERT INTO `spi_user_type_right` ( `type_id`, `page_id`, `can_show`, `can_view`, `can_edit`)
+VALUES
+(1, @resttest_page_id, 1, 1, 1),
+(2, @resttest_page_id, 1, 1, 0),
+(1, @error_page_id, 1, 1, 1),
+(2, @error_page_id, 1, 1, 0),
+(1, @admin_dashboard_page_id, 1, 1, 1),
+(2, @admin_dashboard_page_id, 1, 1, 0),
+(1, @user_page_id, 1, 1, 1),
+(2, @user_page_id, 1, 1, 0),
+(1, @user_type_page_id, 1, 1, 1),
+(2, @user_type_page_id, 1, 1, 0),
+(1, @dashboard_page_id, 1, 1, 1),
+(2, @dashboard_page_id, 1, 1, 0),
+(1, @login_page_id, 1, 1, 1),
+(2, @login_page_id, 1, 1, 0);
 /*!40000 ALTER TABLE `spi_user_type_right` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

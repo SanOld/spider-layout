@@ -48,7 +48,7 @@
       <?php
       $this->widget('zii.widgets.CBreadcrumbs', 
               array('links'                 => $this->breadcrumbs, 
-                    'homeLink'              => '<li>' . CHtml::link('Startseite', array('/dashboard')) . '</li>', 
+                    'homeLink'              => '<li>' . CHtml::link('Home', array('/dashboard')) . '</li>',
                     'tagName'               => 'ul', 
                     'separator'             => '', 
                     'activeLinkTemplate'    => '<li><a href="{url}">{label}</a></li>', 

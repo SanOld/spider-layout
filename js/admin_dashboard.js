@@ -1,4 +1,4 @@
-spi.controller('VisitController', function ($scope, $rootScope, network, GridService) {
+spi.controller('AdminDashboardController', function ($scope, $rootScope, network, GridService) {
   $rootScope._m = 'visit';
   $scope.filter = {};
 
